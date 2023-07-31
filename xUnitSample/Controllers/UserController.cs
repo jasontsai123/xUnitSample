@@ -44,7 +44,7 @@ namespace xUnitSample.Controllers
         [HttpPost("Register")]
         public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
-            var userExist = (await _userService.GetAsync(request.Id)) is not null;
+            var userExist = (await _userService.GetAsync(request.Id))?.Id == request.Id;
             if (userExist)
             {
                 return Ok(new { Succeeded = false, Message = "帳號已存在!" });

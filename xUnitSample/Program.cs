@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using xUnitSample.Infrastructure.Helpers;
 using xUnitSample.Repository;
 using xUnitSample.Service;
 
@@ -44,7 +45,8 @@ builder.Services.AddSwaggerGen(c =>
                     }
                 });
 });
-builder.Services.TryAddScoped<IUserRepository, UserRepository>();
+builder.Services.TryAddSingleton<IJwtHelper, JwtHelper>();
+builder.Services.TryAddSingleton<IUserRepository, UserRepository>();
 builder.Services.TryAddScoped<IUserService, UserService>();
 
 builder.Services.AddAuthentication(options =>
