@@ -42,7 +42,7 @@ namespace xUnitSample.Controllers
 
         [AllowAnonymous]
         [HttpPost("Register")]
-        public async Task<IActionResult> RegisterAsync([FromBody] UserRegistrationRequest request)
+        public async Task<IActionResult> Register([FromBody] UserRegistrationRequest request)
         {
             var userExist = (await _userService.GetAsync(request.Id)) is not null;
             if (userExist)
@@ -66,7 +66,7 @@ namespace xUnitSample.Controllers
 
         [Authorize]
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetAsync([FromRoute] string id)
+        public async Task<IActionResult> Get([FromRoute] string id)
         {
             if (string.IsNullOrWhiteSpace(id))
             {
