@@ -1,21 +1,18 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 using Microsoft.AspNetCore.Identity;
-using xUnitSample.Infrastructure.Helpers;
 using xUnitSample.Repository;
 using xUnitSample.Repository.Models;
 using xUnitSample.Service.Models;
 
 namespace xUnitSample.Service
 {
-    public class UserService
+    public class UserService : IUserService
     {
-        private readonly UserRepository _userRepository;
-        private readonly EncryptionHelper _encryptionHelper;
-        public UserService(UserRepository userRepository, EncryptionHelper encryptionHelper)
+        private readonly IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
             _userRepository = userRepository;
-            _encryptionHelper = encryptionHelper;
         }
 
         /// <summary>
@@ -23,24 +20,19 @@ namespace xUnitSample.Service
         /// </summary>
         /// <param name="id">帳號</param>
         /// <returns></returns>
-        public async Task<UserInformationDto> GetAsync(string id)
+        public async Task<UserInfoDto> GetAsync(string id)
         {
-            var hpUsers = await this._userRepository.GetByAccountAsync(id);
-            if (HPUsersExists(hpUsers) == false)
+            var user = await this._userRepository.GetByIdAsync(id);
+            if (user is null)
             {
-                return new UserInformationDto();
+                return new UserInfoDto();
             }
-            var hpUser = hpUsers.FirstOrDefault();
 
-            var userInformationDto = new UserInformationDto()
+            return new UserInfoDto
             {
-                GroupId = hpUser.Group_id,
-                Name = hpUser.Name,
-                Enable = hpUser.Enable,
-                Account = hpUser.Account
+                Id = user.Id,
+                Name = user.Name
             };
-
-            return userInformationDto;
         }
 
         /// <summary>
@@ -57,81 +49,53 @@ namespace xUnitSample.Service
                 IsAuthenticated = false
             };
 
-            var hpUsers = await this._userRepository.GetById(id);
-            if (HPUsersExists(hpUsers) == false)
+            var user = await this._userRepository.GetByIdAsync(id);
+            if (user is null)
             {
                 return loginFailDto;
             }
 
             // 驗證密碼
-            var result =  new PasswordHasher<string>().VerifyHashedPassword(id, user.PasswordHash, "User1Password");
-            if (result == PasswordVerificationResult.Success)
-
-            var hpUser = hpUsers.FirstOrDefault();
-            var passwordHash = this._EncryptionHelper.HashText(password, hpUser.EncryptedSalt);
-            if (hpUser.PasswordHash != passwordHash || hpUser.Enable == false)
+            var verifyHashedPassword =  new PasswordHasher<string>().VerifyHashedPassword(id, user.PasswordHash, password);
+            if (verifyHashedPassword != PasswordVerificationResult.Success || user.Enable == false)
             {
                 return loginFailDto;
             }
 
             return new AuthenticateDto()
             {
-                IsLogin = true,
-                Account = hpUser.Account
+                UserId = user.Id,
+                IsAuthenticated = true
             };
         }
 
         /// <summary>
         /// 新增使用者
         /// </summary>
-        /// <param name="usersParameterDto">The users dto.</param>
+        /// <param name="createUser">The users dto.</param>
         /// <returns></returns>
-        public async Task<int> CreateAsync(HPUsersDto param)
+        public async Task<bool> CreateAsync(CreateUserDto createUser)
         {
             // 確認帳號有沒有存在
-            var hpUsers = await this._UsersRepository.GetByAccountAsync(param.Account);
-            if (HPUsersExists(hpUsers) == true)
+            var user = await this._userRepository.GetByIdAsync(createUser.Id);
+            if (user is null)
             {
-                return 0;
+                return false;
             }
 
             // 儲存密碼雜湊
             var hasher = new PasswordHasher<string>();
-            user.PasswordHash = hasher.HashPassword(id, password);
-
-            // 驗證密碼
-            var result =  new PasswordHasher<string>().VerifyHashedPassword(user, user.PasswordHash, "User1Password");
-            if (result == PasswordVerificationResult.Success)
+            var passwordHash = hasher.HashPassword(createUser.Id, createUser.Password);
+            var addUserDto = new Users
             {
-                Console.WriteLine("密碼驗證成功");
-            }
-            else
-            {
-                Console.WriteLine("密碼驗證失敗");
-            }
-            var salt = CreateSalt(param.Account + param.Password);
-            var hpUser = new HPUsers()
-            {
-                Group_id = param.GroupId,
-                Name = param.Name,
-                PasswordHash = this._EncryptionHelper.HashText(param.Password, salt),
-                EncryptedSalt = salt,
-                CreateDateTime = DateTime.Now,
-                Enable = true,
-                Account = param.Account
+                Id = createUser.Id,
+                Name = createUser.Name,
+                PasswordHash = passwordHash,
+                CreatedAt = DateTime.Now,
+                UpdatedAt = DateTime.Now,
+                Enable = true
             };
-            return await this._UsersRepository.InsertAsync(hpUser);
-        }
-
-        /// <summary>
-        /// 加鹽
-        /// </summary>
-        /// <param name="salt">The salt.</param>
-        /// <returns></returns>
-        private string CreateSalt(string salt)
-        {
-            byte[] bytes = Encoding.UTF8.GetBytes(salt);
-            return Convert.ToBase64String(new SHA256CryptoServiceProvider().ComputeHash(bytes));
+            return await this._userRepository.InsertAsync(addUserDto);
         }
     }
 }

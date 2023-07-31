@@ -3,9 +3,14 @@
 public class Users
 {
     /// <summary>
+    /// 流水號
+    /// </summary>
+    public int Seq{ get; set; }
+    
+    /// <summary>
     /// 帳號
     /// </summary>
-    public int Id { get; set; }
+    public string Id { get; set; }
 
     /// <summary>
     /// 使用者名稱
@@ -16,11 +21,6 @@ public class Users
     /// 密碼(加密過)
     /// </summary>
     public string PasswordHash { get; set; }
-
-    /// <summary>
-    /// 加密用鹽
-    /// </summary>
-    public string EncryptedSalt { get; set; }
 
     /// <summary>
     /// 新增日期
