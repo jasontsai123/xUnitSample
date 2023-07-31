@@ -1,4 +1,4 @@
-﻿namespace xUnitSample.Models
+﻿namespace xUnitSample.Controllers.Models
 {
     public class LoginRequest
     {

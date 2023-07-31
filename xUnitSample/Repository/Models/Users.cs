@@ -16,6 +16,11 @@ public class Users
     /// 使用者名稱
     /// </summary>
     public string Name { get; set; }
+    
+    /// <summary>
+    /// 信箱
+    /// </summary>
+    public string Email { get; set; }
 
     /// <summary>
     /// 密碼(加密過)

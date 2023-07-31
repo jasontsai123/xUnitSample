@@ -13,8 +13,9 @@ namespace xUnitSample.Repository
                 new Users
                 {
                     Seq = 1,
-                    Id = "N00005",
+                    Id = "user1",
                     Name = "Josh",
+                    Email = "Josh23423@gmail.com",
                     PasswordHash = "AQAAAAEAACcQAAAAEDalRx56AeFrm2mEV30jKeKYgQIGCFPH/1nsiLl7FNx6Xr/ksBDk7+WtzSqqlUWmag==",
                     CreatedAt = new DateTime(2022, 10, 3),
                     UpdatedAt = new DateTime(2022, 10, 3),
@@ -23,8 +24,9 @@ namespace xUnitSample.Repository
                 new Users
                 {
                     Seq = 2,
-                    Id = "N00006",
+                    Id = "user2",
                     Name = "David",
+                    Email = "123David@gmail.com",
                     PasswordHash = "AQAAAAEAACcQAAAAEPPoqypM4VETr9G6yZrf67DsIMOUb+8P+E4UIz1eAJzsIAJv2CDygIImq35qH8J0pA==",
                     CreatedAt = new DateTime(2022, 11, 4),
                     UpdatedAt = new DateTime(2022, 11, 4),
@@ -33,8 +35,9 @@ namespace xUnitSample.Repository
                 new Users
                 {
                     Seq = 3,
-                    Id = "N00007",
+                    Id = "user3",
                     Name = "Emma",
+                    Email = "Emma32@yahoo.com",
                     PasswordHash = "AQAAAAEAACcQAAAAEJryJGFY+aCPjrZZxoehT6Z1vj8XcRR4fPEG6VRGXJC+7El/nTaPJw/EvalatHsKVQ==",
                     CreatedAt = new DateTime(2023, 1, 1),
                     UpdatedAt = new DateTime(2023, 1, 1),

@@ -78,7 +78,7 @@ namespace xUnitSample.Service
         {
             // 確認帳號有沒有存在
             var user = await this._userRepository.GetByIdAsync(createUser.Id);
-            if (user is null)
+            if (user is not null)
             {
                 return false;
             }
