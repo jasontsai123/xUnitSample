@@ -22,7 +22,7 @@ public class JwtHelper : IJwtHelper
         {
             Subject = new ClaimsIdentity(new[]
             {
-                new Claim(ClaimTypes.NameIdentifier, id),
+                new Claim(ClaimTypes.Name, id),
                 new Claim(JwtRegisteredClaimNames.Sub, id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString())
             }),

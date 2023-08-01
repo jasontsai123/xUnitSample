@@ -17,11 +17,13 @@ namespace xUnitSample.Controllers
     [ApiController]
     public class UserController : ControllerBase
     {
+        private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly IJwtHelper _jwtHelper;
         private readonly IUserService _userService;
 
-        public UserController(IJwtHelper jwtHelper, IUserService userService)
+        public UserController(IHttpContextAccessor httpContextAccessor, IJwtHelper jwtHelper, IUserService userService)
         {
+            _httpContextAccessor = httpContextAccessor;
             _jwtHelper = jwtHelper;
             _userService = userService;
         }
@@ -65,9 +67,10 @@ namespace xUnitSample.Controllers
         }
 
         [Authorize]
-        [HttpGet("{id}")]
-        public async Task<IActionResult> Get([FromRoute] string id)
+        [HttpGet("Information")]
+        public async Task<IActionResult> Get()
         {
+            var id = _httpContextAccessor?.HttpContext?.User?.Identity?.Name;
             if (string.IsNullOrWhiteSpace(id))
             {
                 return NotFound();
