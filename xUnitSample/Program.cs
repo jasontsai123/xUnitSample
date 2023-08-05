@@ -5,7 +5,9 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using xUnitSample.Infrastructure.Helpers;
 using xUnitSample.Repository;
+using xUnitSample.Repository.DI;
 using xUnitSample.Service;
+using xUnitSample.Service.DI;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -47,8 +49,9 @@ builder.Services.AddSwaggerGen(c =>
                 });
 });
 builder.Services.TryAddSingleton<IJwtHelper, JwtHelper>();
-builder.Services.TryAddSingleton<IUserRepository, UserRepository>();
-builder.Services.TryAddScoped<IUserService, UserService>();
+builder.Services
+    .AddRepository()
+    .AddService();
 
 builder.Services.AddAuthentication(options =>
 {
