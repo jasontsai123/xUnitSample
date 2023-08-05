@@ -1,12 +1,7 @@
 ﻿namespace xUnitSample.Repository.Models;
 
-public class Users
+public class UserDataModel
 {
-    /// <summary>
-    /// 流水號
-    /// </summary>
-    public int Seq{ get; set; }
-    
     /// <summary>
     /// 帳號
     /// </summary>
@@ -21,6 +16,11 @@ public class Users
     /// 信箱
     /// </summary>
     public string Email { get; set; }
+    
+    /// <summary>
+    /// 密碼(加密過)
+    /// </summary>
+    public string PasswordHash { get; set; }
 
     /// <summary>
     /// 新增日期

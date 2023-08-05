@@ -9,19 +9,19 @@ public interface IUserRepository
     /// </summary>
     /// <param name="id"></param>
     /// <returns></returns>
-    Task<Users?> GetByIdAsync(string id);
+    Task<UserDataModel?> GetByIdAsync(string id);
 
     /// <summary>
     /// 新增
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    Task<bool> InsertAsync(Users user);
+    Task<bool> InsertAsync(UserDataModel data);
 
     /// <summary>
     /// 更新
     /// </summary>
-    /// <param name="user"></param>
+    /// <param name="data"></param>
     /// <returns></returns>
-    Task<bool> UpdateAsync(Users user);
+    Task<bool> UpdateAsync(UserDataModel data);
 }

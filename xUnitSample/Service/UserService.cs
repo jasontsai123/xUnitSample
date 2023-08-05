@@ -86,7 +86,7 @@ namespace xUnitSample.Service
             // 儲存密碼雜湊
             var hasher = new PasswordHasher<string>();
             var passwordHash = hasher.HashPassword(createUser.Id, createUser.Password);
-            var addUserDto = new Users
+            var addUserDto = new UserDataModel
             {
                 Id = createUser.Id,
                 Name = createUser.Name,
